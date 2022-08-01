@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weatherapp/weather.dart';
 import 'package:weatherapp/weather_api.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class home extends StatefulWidget {
   const home({Key? key}) : super(key: key);
@@ -10,12 +11,46 @@ class home extends StatefulWidget {
 }
 
 class _homeState extends State<home> {
+
+  var size,height,width;
+  @override
+  Widget build(BuildContext context){
+  size = MediaQuery.of(context).size;
+  height = size.height;
+  width = size.width;
+    return ScreenUtilInit(
+     designSize:  Size(width, height),
+      builder:(context , child){
+         return MaterialApp(
+           home: myh(),
+);
+      },
+
+    );
+  }
+
+
+
+
+}
+
+class myh extends StatefulWidget {
+  const myh({Key? key}) : super(key: key);
+
+  @override
+  State<myh> createState() => _myhState();
+}
+
+class _myhState extends State<myh> {
+
+
+
   WeatherApi clint = WeatherApi();
   Weather? data;
   String? city = 'delhi';
 
   Future<void> getdata(String? city) async {
-    if(city!.isNotEmpty) {
+    if (city!.isNotEmpty) {
       data = await clint.getData(city);
     }
   }
@@ -52,9 +87,12 @@ class _homeState extends State<home> {
 
   TextEditingController _cityname = TextEditingController();
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
         backgroundColor: Colors.grey[100],
         appBar: AppBar(
           elevation: 0.0,
@@ -66,7 +104,7 @@ class _homeState extends State<home> {
           centerTitle: true,
         ),
         body: Container(
-          padding: EdgeInsets.all(30.0),
+          padding: EdgeInsets.all(10.r),
           child: SingleChildScrollView(
             child: Column(children: [
               TextField(
@@ -78,7 +116,7 @@ class _homeState extends State<home> {
                 ),
               ),
               SizedBox(
-                height: 10.0,
+                height: 10.h,
               ),
               FlatButton(
                   onPressed: () {
@@ -95,89 +133,101 @@ class _homeState extends State<home> {
               FutureBuilder(
                   future: getdata(city),
                   builder: (context, snapshot) {
-                    if(data==null){
+                    if (data == null) {
                       return Container(
-                        margin: EdgeInsets.only(top: 40.0),
+                        margin: EdgeInsets.only(top: 20.h),
                         alignment: Alignment.center,
-                        child: Text("No city exits in this name",style: TextStyle(fontSize: 30.0),),
+                        child: Text(
+                          "No city exits in this name",
+                          style: TextStyle(fontSize: 20.sp),
+                        ),
                       );
-                    }
-                    else if (snapshot.connectionState == ConnectionState.done) {
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.done) {
                       return Container(
                         alignment: Alignment.center,
                         child: Column(
                           children: [
                             SizedBox(
-                              height: 40.0,
+                              height: 30.h,
                             ),
                             Container(
-                              height: 60.0,
-                              width: 60.0,
+                              height: 60.h,
+                              width: 60.h,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: Colors.lightBlueAccent,
                                 ),
                                 color: Colors.blueAccent[200],
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(60)),
+                                BorderRadius.all(Radius.circular(100)),
                               ),
                               child: Image.network(
                                 _imageUrl() ??
                                     'http://openweathermap.org/img/wn/01d.png',
                               ),
                             ),
-                            SizedBox(height: 20.0,),
+                            SizedBox(
+                              height: 20.h,
+                            ),
                             Text(
                               data?.location != null
                                   ? '${data?.location}'
                                   : 'Loading..',
-                              style:
-                                  TextStyle(fontSize: 20.0, letterSpacing: 2,color: Colors.black),
+                              style: TextStyle(
+                                  fontSize: 18.sp,
+                                  letterSpacing: 2,
+                                  color: Colors.black),
                             ),
                             SizedBox(
-                              height: 20.0,
+                              height: 10.h,
                             ),
                             Text(
                               data?.temp != null
                                   ? '${data?.temp} °C'
                                   : 'Loading..',
                               style: TextStyle(
-                                fontSize: 40.0,
+                                fontSize: 30.sp,
                               ),
                             ),
-                            SizedBox(height: 10.0,),
+                            SizedBox(
+                              height: 5.h,
+                            ),
                             Text(
                               data?.description != null
                                   ? '${data?.description}'
                                   : 'Loading..',
-                              style:
-                                  TextStyle(fontSize: 20.0, letterSpacing: 2,color: Colors.black),
-                            ),
-                            SizedBox(
-                              height: 20.0,
-                            ),
-                            Text(
-                              "Feels like ${data?.feels_like} °C",
                               style: TextStyle(
-                                  fontSize: 20.0,
+                                  fontSize: 15.sp,
                                   letterSpacing: 2,
                                   color: Colors.black),
                             ),
                             SizedBox(
-                              height:
-                                  MediaQuery.of(context).size.height * 1 / 8,
+                              height: 10.h,
+                            ),
+                            Text(
+                              "Feels like ${data?.feels_like} °C",
+                              style: TextStyle(
+                                  fontSize: 16.sp,
+                                  letterSpacing: 2,
+                                  color: Colors.black),
+                            ),
+                            SizedBox(
+                              height:50.h,
                             ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceAround,
                               children: [
                                 Container(
                                   padding: EdgeInsets.all(9.0),
                                   alignment: Alignment.center,
-                                  height: 120.0,
-                                  width: 100.0,
+                                  height: 90.h,
+                                  width: 90.w,
                                   child: Text(
                                     "Max temp ${data?.max_temp} °C",
-                                    style: TextStyle(fontSize: 18.0,color: Colors.black),
+                                    style: TextStyle(
+                                        fontSize: 15.sp, color: Colors.black),
                                     textAlign: TextAlign.center,
                                   ),
                                   decoration: BoxDecoration(
@@ -188,11 +238,12 @@ class _homeState extends State<home> {
                                 Container(
                                   padding: EdgeInsets.all(10.0),
                                   alignment: Alignment.center,
-                                  height: 120.0,
-                                  width: 100.0,
+                                  height: 90.h,
+                                  width: 90.w,
                                   child: Text(
                                     "Min temp  ${data?.min_temp} °C",
-                                    style: TextStyle(fontSize: 18.0,color: Colors.black),
+                                    style: TextStyle(
+                                        fontSize: 15.sp, color: Colors.black),
                                     textAlign: TextAlign.center,
                                   ),
                                   decoration: BoxDecoration(
@@ -203,10 +254,13 @@ class _homeState extends State<home> {
                                 Container(
                                   padding: EdgeInsets.all(10.0),
                                   alignment: Alignment.center,
-                                  height: 120.0,
-                                  width: 100.0,
-                                  child: Text("Humidity  ${data?.humidity} %",
-                                      style: TextStyle(fontSize: 18.0,color: Colors.black),
+                                  height: 90.h,
+                                  width: 90.w,
+                                  child: Text(
+                                      "Humidity  ${data?.humidity} %",
+                                      style: TextStyle(
+                                          fontSize: 15.sp,
+                                          color: Colors.black),
                                       textAlign: TextAlign.center),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15),
@@ -216,19 +270,21 @@ class _homeState extends State<home> {
                               ],
                             ),
                             SizedBox(
-                              height:
-                                  MediaQuery.of(context).size.height * 1 / 40,
+                              height:10.h,
                             ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceAround,
                               children: [
                                 Container(
                                   padding: EdgeInsets.all(10.0),
                                   alignment: Alignment.center,
-                                  height: 120.0,
-                                  width: 100.0,
+                                  height: 90.h,
+                                  width: 90.w,
                                   child: Text("pressure ${data?.pressure}",
-                                      style: TextStyle(fontSize: 18.0,color: Colors.black),
+                                      style: TextStyle(
+                                          fontSize: 15.sp,
+                                          color: Colors.black),
                                       textAlign: TextAlign.center),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15),
@@ -238,10 +294,13 @@ class _homeState extends State<home> {
                                 Container(
                                   padding: EdgeInsets.all(10.0),
                                   alignment: Alignment.center,
-                                  height: 120.0,
-                                  width: 100.0,
-                                  child: Text('Wind  ${data?.wind_speed}km/hr',
-                                      style: TextStyle(fontSize: 18.0,color: Colors.black),
+                                  height: 90.h,
+                                  width: 90.w,
+                                  child: Text(
+                                      'Wind  ${data?.wind_speed}km/hr',
+                                      style: TextStyle(
+                                          fontSize: 15.sp,
+                                          color: Colors.black),
                                       textAlign: TextAlign.center),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15),
@@ -251,10 +310,12 @@ class _homeState extends State<home> {
                                 Container(
                                   padding: EdgeInsets.all(10.0),
                                   alignment: Alignment.center,
-                                  height: 120.0,
-                                  width: 100.0,
+                                  height: 90.h,
+                                  width: 90.w,
                                   child: Text('Clouds  ${data?.cloud} %',
-                                      style: TextStyle(fontSize: 18.0,color: Colors.black),
+                                      style: TextStyle(
+                                          fontSize: 15.sp,
+                                          color: Colors.black),
                                       textAlign: TextAlign.center),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15),
@@ -271,6 +332,10 @@ class _homeState extends State<home> {
                   }),
             ]),
           ),
-        ));
+        )
+
+
+
+    );
   }
 }
